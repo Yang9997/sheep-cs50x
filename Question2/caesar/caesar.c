@@ -7,10 +7,9 @@ bool only_digits(string s);
 int rotate(string s);
 void ciphertext(int n,string s);
 
-int main(int args, string argv[])
+int main(int argc, string argv[])
 {
-    if (args!=2 || !only_digits(argv[1])){
-        // printf("%i\n",args);
+    if (argc!=2 || !only_digits(argv[1])){
         printf("Usage: ./caesar key\n");
         return 1;
     }
