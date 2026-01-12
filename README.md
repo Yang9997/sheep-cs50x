@@ -2,3 +2,5 @@
 
 - [Course Link](https://cs50.harvard.edu/x/)
 - [Problem Set 8](https://github.com/csfive/CS50x-pset8)
+
+题目是按23年的答案验证的。
