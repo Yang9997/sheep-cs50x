@@ -100,3 +100,6 @@ Question3：
 4. 插入排序：Question3/temps/insertsort.c
 5. 选择排序，冒泡排序，归并排序：Question3/sorts/
 
+Question4:
+1. 关于变量类型存储范围超出会溢出截断，比如BYTE类型变量范围是0-255：Question4/filter-less/readme.md
+2. 注意中间值临时变量的使用会不会影响未来要使用的变量，尤其是数组类型要在原数值上整体做改变的时候，注意要完全变化之后再一起用中间值过渡来修改值：Question4/filter-less/readme.md

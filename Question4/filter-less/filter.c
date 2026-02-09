@@ -148,3 +148,10 @@ int main(int argc, char *argv[])
     fclose(outptr);
     return 0;
 }
+
+/*
+    ./filter -r images/stadium.bmp ./outfilesR/stadium.bmp
+    ./filter -r images/tower.bmp ./outfilesR/tower.bmp
+    ./filter -r images/courtyard.bmp ./outfilesR/courtyard.bmp
+    ./filter -r images/yard.bmp ./outfilesR/yard.bmp
+*/
