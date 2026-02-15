@@ -93,13 +93,26 @@ check50 submit50 cs50/problems/2023/x/readability
 ---
 # 2. 笔记索引：
 
-Question3：
+## Question3：
 1. 关于c语言的string和strlen：Question3/atoi/readme.md
 2. runoff 候选人投票题目代码数组赋值逻辑错误：Question3/runoff/readme.md
 3. tideman 候选人投票题目递归代码逻辑：Question3/tideman/readme.md
 4. 插入排序：Question3/temps/insertsort.c
 5. 选择排序，冒泡排序，归并排序：Question3/sorts/
 
-Question4:
+## Question4:
 1. 关于变量类型存储范围超出会溢出截断，比如BYTE类型变量范围是0-255：Question4/filter-less/readme.md
 2. 注意中间值临时变量的使用会不会影响未来要使用的变量，尤其是数组类型要在原数值上整体做改变的时候，注意要完全变化之后再一起用中间值过渡来修改值：Question4/filter-less/readme.md
+3. 二维数组赋值：Question4/filter-more/readme.md
+4. 强制类型转换：Question4/filter-more/readme.md
+### 内存与文件
+5. jpg图片文件恢复：Question4/recover/readme.md
+6. wav音频文件反转：Question4/reverse/readme.md
+
+
+
+
+
+
+
+
