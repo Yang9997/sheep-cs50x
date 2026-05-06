@@ -3,3 +3,6 @@ wget-log
 Dev
 cs50venv
 .dockerignore
+readme.md
+.vscode
+
