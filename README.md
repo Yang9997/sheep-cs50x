@@ -67,7 +67,7 @@ clang 1-hello.c -o 1-hello -lcs50
 ./1-hello
 # 运行成功就说明库安装没问题
 ```
-## docker
+## 容器环境配置
 1. 下载CS50的最新版本`.devcontainer.json`文件来自[https://cs50.dev/.devcontainer.json](https://cs50.dev/.devcontainer.json)，将其保存在cs50代码项目文件夹。由于文件名以点（即句点）开头，因此当您下载该文件时，它可能看起来“消失”了。但是，在 Linux 或 macOS 上的终端窗口中，您应该看到它`ls -a`，并且在 Windows 的命令提示符下，您应该会看到它。
 2. 主机启动docker `sudo systemctl start docker`。
 3. 安装 VS Code 的[Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)扩展。
@@ -94,13 +94,16 @@ submit50 cs50/problems/2023/x/readability
 ---
 # 2. 环境功能
 ```shell
+# 容器内：
 # 编译
 make hello.c
 # 运行
 ./hello
 
+# python虚拟环境内：
+# 使用check50检查代码
+check50 cs50/problems/2023/x/filter/less
 ```
-
 ---
 # 3. 笔记索引
 
