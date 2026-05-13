@@ -84,7 +84,9 @@ pip install check50
 check50 --help
 check50 cs50/problems/2023/x/readability
 # 这里首次会需要github授权，https://submit.cs50.io
-# 再回来check50，有时候网络连接不稳定connect失败就多check几次
+# 再回来check50，有时候网络连接不稳定Version check failed导致connect失败就多check几次
+pip install submit50
+submit50 --help
 submit50 cs50/problems/2023/x/readability
 ```
 有关check50：[check50 — check50 Docs](https://cs50.readthedocs.io/projects/check50/en/latest/)
@@ -93,14 +95,25 @@ submit50 cs50/problems/2023/x/readability
 
 ---
 # 2. 环境功能
+## make
 ```shell
-# 容器内：
-# 编译
-make hello.c
-# 运行
-./hello
-
-# python虚拟环境内：
+# 容器内
+make my_program
+```
+## run
+```shell
+# 容器内
+./my_program arg1 arg2
+```
+## debug
+```shell
+# 容器内
+# make过之后
+debug50 ./my_program arg1 arg2
+```
+## check
+```shell
+# python虚拟环境内
 # 使用check50检查代码
 check50 cs50/problems/2023/x/filter/less
 ```
@@ -121,6 +134,7 @@ check50 cs50/problems/2023/x/filter/less
 4. 强制类型转换：Question4/filter-more/readme.md
 ### 内存与文件
 5. jpg图片文件恢复：Question4/recover/readme.md
+    - 原题目中少了一句：标准 JPEG 文件头的完整特征是第一个字节0xFF，第二个字节0xD8，第三个字节0xFF，第四个字节高四位为1110
 6. wav音频文件反转：Question4/reverse/readme.md
 7. bmp图片文件倒立：Question4/bottomup/readme.md
 

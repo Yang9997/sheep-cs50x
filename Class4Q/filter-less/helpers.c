@@ -1,4 +1,5 @@
 #include "helpers.h"
+#include <math.h>
 
 // Convert image to grayscale
 // 灰色
@@ -11,7 +12,7 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
         for (int j = 0; j < width; j++)
         {
             tmp = image[i][j].rgbtBlue + image[i][j].rgbtGreen + image[i][j].rgbtRed;
-            tmp /= 3;
+            tmp = round(tmp * 1.0 / 3.0);
             image[i][j].rgbtBlue = tmp;
             image[i][j].rgbtGreen = tmp;
             image[i][j].rgbtRed = tmp;
@@ -49,7 +50,7 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
             }
             else
             {
-                image[i][j].rgbtRed = sepiaRed;
+                image[i][j].rgbtRed = round(sepiaRed);
             }
 
             if (sepiaGreen > 255)
@@ -58,7 +59,7 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
             }
             else
             {
-                image[i][j].rgbtGreen = sepiaGreen;
+                image[i][j].rgbtGreen = round(sepiaGreen);
             }
 
             if (sepiaBlue > 255)
@@ -67,7 +68,7 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
             }
             else
             {
-                image[i][j].rgbtBlue = sepiaBlue;
+                image[i][j].rgbtBlue = round(sepiaBlue);
             }
         }
     }
@@ -86,16 +87,16 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
         for (int j = 0; j < width / 2; j++)
         {
             tmpRed = image[i][j].rgbtRed;
-            image[i][j].rgbtRed = image[i][width - j].rgbtRed;
-            image[i][width - j].rgbtRed = tmpRed;
+            image[i][j].rgbtRed = image[i][width - j - 1].rgbtRed;
+            image[i][width - j - 1].rgbtRed = tmpRed;
 
             tmpGreen = image[i][j].rgbtGreen;
-            image[i][j].rgbtGreen = image[i][width - j].rgbtGreen;
-            image[i][width - j].rgbtGreen = tmpGreen;
+            image[i][j].rgbtGreen = image[i][width - j - 1].rgbtGreen;
+            image[i][width - j - 1].rgbtGreen = tmpGreen;
 
             tmpBlue = image[i][j].rgbtBlue;
-            image[i][j].rgbtBlue = image[i][width - j].rgbtBlue;
-            image[i][width - j].rgbtBlue = tmpBlue;
+            image[i][j].rgbtBlue = image[i][width - j - 1].rgbtBlue;
+            image[i][width - j - 1].rgbtBlue = tmpBlue;
         }
     }
     return;
@@ -107,6 +108,7 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
 {
     RGBTRIPLE tmpImage[height + 2][width + 2];
 
+    // 外扩一圈0
     for (int i = 0; i < (height + 2); i++)
     {
         for (int j = 0; j < (width + 2); j++)
@@ -143,10 +145,25 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
                 }
             }
 
-            tmpRed /= 9;
-            tmpGreen /= 9;
-            tmpBlue /= 9;
-
+            // 做第二遍还是会错啊错，这个4, 6, 9
+            if ((i == 1 || i == height) && (j == 1 || j == width))
+            {
+                tmpRed = round(tmpRed * 1.0 / 4.0);
+                tmpGreen = round(tmpGreen * 1.0 / 4.0);
+                tmpBlue = round(tmpBlue * 1.0 / 4.0);
+            }
+            else if (i == 1 || i == height || j == 1 || j == width)
+            {
+                tmpRed = round(tmpRed * 1.0 / 6.0);
+                tmpGreen = round(tmpGreen * 1.0 / 6.0);
+                tmpBlue = round(tmpBlue * 1.0 / 6.0);
+            }
+            else
+            {
+                tmpRed = round(tmpRed * 1.0 / 9.0);
+                tmpGreen = round(tmpGreen * 1.0 / 9.0);
+                tmpBlue = round(tmpBlue * 1.0 / 9.0);
+            }
             image[i - 1][j - 1].rgbtRed = tmpRed;
             image[i - 1][j - 1].rgbtGreen = tmpGreen;
             image[i - 1][j - 1].rgbtBlue = tmpBlue;
