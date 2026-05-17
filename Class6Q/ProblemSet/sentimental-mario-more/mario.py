@@ -2,17 +2,18 @@
 def main():
     height = get_height()
     for i in range(height):
-        print(" " * (height - 1 - i) + "#" * (i + 1))
+        print(" " * (height - 1 - i) + "#" * (i + 1) + "  " + "#" * (i + 1))
 
 def get_height():
     while True:
-        number = input("Height(1~8): ")
+        number = input("Height: ")
         try:
             int(number)
             number = int(number)
-            if number > 0 and number < 9:
+            if number < 9 and number > 0:
                 return number
-            print("Error. Please try again.")
+            else:
+                print("Error. Please try again.")
         except ValueError:
             print("Error. Please try again.")
 
