@@ -1,16 +1,10 @@
-# 对于已提交过的文件没办法通过添加后生效，需要手动删掉
-# # 1. 从 Git 的跟踪中移除 .vscode（但保留工作区的实际文件夹）
-# git rm -r --cached .vscode
-# # 2. 提交这个移除操作
-# git commit -m "Remove .vscode from tracking"
-# # 3. 提交
-# git push origin main
 wget-log
 .vscode
 .devcontainer.json
 .dockerignore
 Dev
 cs50venv
-readme.md
+/readme.md
+
 
 

@@ -139,7 +139,35 @@ check50 cs50/problems/2023/x/filter/less
 7. bmp图片文件倒立：Class4Q1/bottomup/readme.md
 
 ## Question6：
-1. 文件，列表和字典：Class6Q/ProblemSet/dna/readme.md
+1. dna题目有关文件，列表和字典：Class6Q/ProblemSet/dna/readme.md
+2. bank题目内容缺失：Class6Q/PracticeProblem/bank/readme.md
+3. figlet题目内容缺失：Class6Q/PracticeProblem/figlet/readme.md
+
+# 附录：git相关
+
+## .gitignore
+```bash
+# git的忽略模式语法不支持 ./ 前缀
+# 在.gitignore文件里面
+# error 无效
+# ./readme.md
+# 有效
+/readme.md
+```
+```bash
+# 对于已提交跟踪过的文件没办法通过添加后生效，需要手动删掉
+# 检测是否已跟踪
+# 列出所有被跟踪且文件名包含filename的路径。
+git ls-files | grep "filename"
+# 如果输出显示，已经被跟踪了的话
+# 以.vscode为例
+# 1. 从 Git 的跟踪中移除 .vscode（但保留工作区的实际文件夹）
+git rm -r --cached .vscode
+# 2. 提交这个移除操作
+git commit -m "Remove .vscode from tracking"
+# 3. 提交
+git push origin main
+```
 
 
 
