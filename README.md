@@ -120,23 +120,26 @@ check50 cs50/problems/2023/x/filter/less
 ---
 # 3. 笔记索引
 
-## Question3：
-1. 关于c语言的string和strlen：Question3/atoi/readme.md
-2. runoff 候选人投票题目代码数组赋值逻辑错误：Question3/runoff/readme.md
-3. tideman 候选人投票题目递归代码逻辑：Question3/tideman/readme.md
-4. 插入排序：Question3/temps/insertsort.c
-5. 选择排序，冒泡排序，归并排序：Question3/sorts/
+## Class3Q：
+1. 关于c语言的string和strlen：Class3Q/PracticeProblem/atoi/readme.md
+2. runoff 候选人投票题目代码数组赋值逻辑错误：Class3Q/ProblemSet/runoff/readme.md
+3. tideman 候选人投票题目递归代码逻辑：Class3Q/ProblemSet/tideman/readme.md
+4. 插入排序：Class3Q/ProblemSet/temps/insertsort.c
+5. 选择排序，冒泡排序，归并排序：Class3Q/Lab/sorts/
 
 ## Question4:
-1. 关于变量类型存储范围超出会溢出截断，比如BYTE类型变量范围是0-255：Question4/filter-less/readme.md
-2. 注意中间值临时变量的使用会不会影响未来要使用的变量，尤其是数组类型要在原数值上整体做改变的时候，注意要完全变化之后再一起用中间值过渡来修改值：Question4/filter-less/readme.md
-3. 二维数组赋值：Question4/filter-more/readme.md
-4. 强制类型转换：Question4/filter-more/readme.md
+1. 关于变量类型存储范围超出会溢出截断，比如BYTE类型变量范围是0-255：Class4Q1filter-less/readme.md
+2. 注意中间值临时变量的使用会不会影响未来要使用的变量，尤其是数组类型要在原数值上整体做改变的时候，注意要完全变化之后再一起用中间值过渡来修改值：Class4Q1/filter-less/readme.md
+3. 二维数组赋值：Class4Q1/filter-more/readme.md
+4. 强制类型转换：Class4Q1/filter-more/readme.md
 ### 内存与文件
-5. jpg图片文件恢复：Question4/recover/readme.md
+5. jpg图片文件恢复：Class4Q1/recover/readme.md
     - 原题目中少了一句：标准 JPEG 文件头的完整特征是第一个字节0xFF，第二个字节0xD8，第三个字节0xFF，第四个字节高四位为1110
-6. wav音频文件反转：Question4/reverse/readme.md
-7. bmp图片文件倒立：Question4/bottomup/readme.md
+6. wav音频文件反转：Class4Q1/reverse/readme.md
+7. bmp图片文件倒立：Class4Q1/bottomup/readme.md
+
+## Question6：
+1. 文件，列表和字典：Class6Q/ProblemSet/dna/readme.md
 
 
 
