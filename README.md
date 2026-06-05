@@ -8,17 +8,22 @@
 
 题目是按23年的答案验证的。
 
----
+## 文件结构
+```bash
+# 单层目录结构
+tree -L 1
+```
+
 # 1. 环境配置
 [CS50 Library for C — CS50 Docs](https://cs50.readthedocs.io/libraries/cs50/c/)
 ## 库安装
 Ubuntu(wsl同)：
-```shell
+```bash
 curl -s https://packagecloud.io/install/repositories/cs50/repo/script.deb.sh | sudo bash
 sudo apt install libcs50
 ```
 若有报错：
-```shell
+```bash
 # 1. 首先备份并删除有问题的文件
 sudo mv /etc/apt/sources.list.d/nvidia-container-toolkit.list /etc/apt/sources.list.d/nvidia-container-toolkit.list.bak
 # 2. 清理APT缓存并更新
@@ -28,7 +33,7 @@ sudo apt-get update
 sudo apt install libcs50
 ```
 ## 环境变量设置
-```shell
+```bash
 vim ~/.bashrc
 
 # 末尾添加内容
@@ -41,22 +46,24 @@ export LDLIBS="-lcrypt -lcs50 -lm"
 source ~/.bashrc
 
 # 需要下载clang就正常下载
+sudo apt update
+sudo apt install clang
 ```
 测试：
-```shell
+```bash
 # 检查是否设置正确
 echo $CC
 echo $CFLAGS
 echo $LDLIBS
 ```
 测试成功：
-```shell
+```bash
 clang
 -ferror-limit=1 -gdwarf-4 -ggdb3 -O0 -std=c11 -Wall -Werror -Wextra -Wno-gnu-folding-constant -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable -Wshadow
 -lcrypt -lcs50 -lm
 ```
 编译代码成功：
-```shell
+```bash
 # vscode启动启动启动全部启动
 code .
 # 进入到Week1的文件夹
@@ -74,9 +81,9 @@ clang 1-hello.c -o 1-hello -lcs50
 4. 打开 VS Code 的[命令面板](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette)，如在 Linux 上通过**Ctrl+Shift+P** ，选择`>Dev Containers - Open Folder in Container...`，项目文件夹就会在容器内打开。
 ## 虚拟环境配置
 发现在docker内的环境里面用不了check50之类的包，所以在wsl环境里面再开一个python下的虚拟环境
-```shell
+```bash
 # 创建
-python -m venv cs50venv
+python3 -m venv cs50venv
 # 激活
 source cs50venv/bin/activate
 # 下载包
@@ -93,31 +100,31 @@ submit50 cs50/problems/2023/x/readability
 
 其他的50包的下载使用也很类似
 
----
+
 # 2. 环境功能
 ## make
-```shell
+```bash
 # 容器内
 make my_program
 ```
 ## run
-```shell
+```bash
 # 容器内
 ./my_program arg1 arg2
 ```
 ## debug
-```shell
+```bash
 # 容器内
 # make过之后
 debug50 ./my_program arg1 arg2
 ```
 ## check
-```shell
+```bash
 # python虚拟环境内
 # 使用check50检查代码
 check50 cs50/problems/2023/x/filter/less
 ```
----
+
 # 3. 笔记索引
 
 ## Class3Q：
