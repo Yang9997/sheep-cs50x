@@ -149,7 +149,7 @@ check50 cs50/problems/2023/x/filter/less
 1. dna题目有关文件，列表和字典：Class6Q/ProblemSet/dna/readme.md
 2. bank题目内容缺失：Class6Q/PracticeProblem/bank/readme.md
 3. figlet题目内容缺失：Class6Q/PracticeProblem/figlet/readme.md
-
+4. 七日平均值 没看明白这题答案，而且AI给的代码好像也不太对，后续重新做 /workspaces/CS50/Class6Q1/seven-day-average
 # 附录：git相关
 
 ## .gitignore
