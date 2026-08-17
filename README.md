@@ -135,21 +135,12 @@ check50 cs50/problems/2023/x/filter/less
 5. 选择排序，冒泡排序，归并排序：Class3Q/Lab/sorts/
 
 ## Question4:
-1. 关于变量类型存储范围超出会溢出截断，比如BYTE类型变量范围是0-255：Class4Q1filter-less/readme.md
-2. 注意中间值临时变量的使用会不会影响未来要使用的变量，尤其是数组类型要在原数值上整体做改变的时候，注意要完全变化之后再一起用中间值过渡来修改值：Class4Q1/filter-less/readme.md
-3. 二维数组赋值：Class4Q1/filter-more/readme.md
-4. 强制类型转换：Class4Q1/filter-more/readme.md
-### 内存与文件
-5. jpg图片文件恢复：Class4Q1/recover/readme.md
-    - 原题目中少了一句：标准 JPEG 文件头的完整特征是第一个字节0xFF，第二个字节0xD8，第三个字节0xFF，第四个字节高四位为1110
-6. wav音频文件反转：Class4Q1/reverse/readme.md
-7. bmp图片文件倒立：Class4Q1/bottomup/readme.md
+1. 关于变量类型存储范围超出会溢出截断，比如BYTE类型变量范围是0-255
+2. 注意中间值临时变量的使用会不会影响未来要使用的变量，尤其是数组类型要在原数值上整体做改变的时候，注意要完全变化之后再一起用中间值过渡来修改值
 
 ## Question6：
-1. dna题目有关文件，列表和字典：Class6Q/ProblemSet/dna/readme.md
-2. bank题目内容缺失：Class6Q/PracticeProblem/bank/readme.md
-3. figlet题目内容缺失：Class6Q/PracticeProblem/figlet/readme.md
-4. 七日平均值 没看明白这题答案，而且AI给的代码好像也不太对，后续重新做 /workspaces/CS50/Class6Q1/seven-day-average
+
+
 # 附录：git相关
 
 ## .gitignore
