@@ -7,7 +7,7 @@
 int main(void)
 {
     char *s = get_string("s: ");
-    if ( s == NULL)
+    if (s == NULL)
     {
         return 1;
     }
