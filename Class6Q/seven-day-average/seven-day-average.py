@@ -32,11 +32,14 @@ def main():
     # Print out 7-day averages for this week vs last week
     comparative_averages(new_cases, states)
 
+    file.close()
 
 # TODO: Create a dictionary to store 14 most recent days of new cases by state
 def calculate(reader):
-    ...
-
+    previous_cases = {}
+    new_cases = {}
+    for item in reader.reverse():
+        if item[not]
 
 # TODO: Calculate and print out seven day average for given state
 def comparative_averages(new_cases, states):
