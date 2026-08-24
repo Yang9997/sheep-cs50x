@@ -34,11 +34,6 @@ def main():
 
     file.close()
 
-def getAS(reader):
-    for row in reader:
-        if row["state"] == "American Samoa":
-            print(row)
-
 # TODO: Create a dictionary to store 14 most recent days of new cases by state
 def calculate(reader):
     previous_cases = {}   # 存储每个州上一次的累计病例数
