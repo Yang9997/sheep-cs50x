@@ -1,0 +1,888 @@
+/* =========================================================
+   1. 整个网页 body
+   ========================================================= */
+
+body {
+    /*
+        去掉浏览器默认给 body 添加的外边距。
+        如果不设置为 0，页面最外圈通常会有一小圈空白。
+    */
+    margin: 0;
+
+    /*
+        vh = viewport height，即“可视窗口高度”。
+
+        100vh = 当前浏览器可视区域完整高度。
+        50vh  = 当前浏览器可视区域高度的一半。
+
+        min-height 表示“最小高度”，而不是固定高度。
+        所以正文内容很多时，body 仍然可以继续向下延伸。
+    */
+    min-height: 100vh;
+
+    /*
+        使用 seed.jpg 作为整个页面的背景图片。
+        如果图片文件名改变，这里也需要对应修改。
+    */
+    background-image: url("seed.jpg");
+
+    /*
+        cover：
+        保持图片原本长宽比例，同时铺满整个显示区域。
+
+        如果浏览器窗口比例和图片比例不同，
+        图片的一部分可能会被裁掉，但不会被拉伸变形。
+    */
+    background-size: cover;
+
+    /*
+        图片发生裁切时，尽量以图片中央为中心。
+    */
+    background-position: center;
+
+    /*
+        防止图片尺寸不足时重复铺设。
+    */
+    background-repeat: no-repeat;
+
+    /*
+        页面滚动的时候背景保持固定，
+        前面的 panel、导航栏和正文正常随页面滚动。
+    */
+    background-attachment: fixed;
+
+    /*
+        网站整体字体。
+
+        Trebuchet MS 优先；
+        中文环境下可以使用 Microsoft YaHei；
+        如果都不存在则使用浏览器默认 sans-serif 字体。
+    */
+    font-family:
+        "Trebuchet MS",
+        "Microsoft YaHei",
+        sans-serif;
+
+    /*
+        页面普通文字的基础颜色。
+    */
+    color: #29496d;
+}
+
+
+/* =========================================================
+   2. page：panel 外面的页面布局区域
+   ========================================================= */
+
+.page {
+    /*
+        page 至少拥有一个完整窗口的高度。
+    */
+    min-height: 100vh;
+
+    /*
+        padding = 内边距。
+
+        给 panel 和浏览器边缘之间留下空间。
+
+        这里使用 64px，而不是让 panel 直接铺满整个窗口。
+
+        左边也必须留出一定空间，
+        因为 side-nav 有一半会位于 panel 外面。
+    */
+    padding: 64px;
+
+    /*
+        默认情况下：
+        width/height + padding 可能导致元素实际尺寸变大。
+
+        border-box 表示：
+        padding 和 border 计算在元素设定尺寸以内。
+
+        这样计算页面大小会方便很多。
+    */
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   3. panel：半透明圆角主体
+   ========================================================= */
+
+.panel {
+    /*
+        position: relative 在这里最主要的作用
+        不是移动 panel 自己。
+
+        而是建立一个“定位参考系”。
+
+        之后：
+        .top-nav  使用 position: absolute
+        .side-nav 使用 position: absolute
+
+        它们就会以 panel 为位置参考。
+    */
+    position: relative;
+
+    /*
+        page 上下各有 64px padding，
+        总共是 128px。
+
+        所以 panel 最小高度：
+        一个窗口高度 - 128px。
+
+        使用 min-height 而不是 height 的原因：
+
+        内容少：
+        panel 仍然接近一整屏。
+
+        内容多：
+        panel 可以继续向下增长。
+    */
+    min-height: calc(100vh - 128px);
+
+    /*
+        rgba 最后一个数字代表透明度。
+
+        RGB：
+        255, 255, 255 = 白色。
+
+        0.5 = 50% 不透明度。
+
+        这里不用 opacity: 0.5，
+        因为 opacity 会让 panel 里面的文字和按钮
+        也一起变透明。
+
+        rgba 只让背景颜色半透明。
+    */
+    background-color: rgba(255, 255, 255, 0.5);
+
+    /*
+        给透明 panel 添加一条比较淡的边框。
+    */
+    border: 1px solid rgba(255, 255, 255, 0.65);
+
+    /*
+        圆角。
+    */
+    border-radius: 30px;
+
+    box-sizing: border-box;
+
+    /*
+        对 panel 后面的背景做轻微模糊。
+
+        它不是页面结构所必需的，
+        主要用于增强半透明玻璃效果。
+    */
+    backdrop-filter: blur(6px);
+}
+
+
+/* =========================================================
+   4. 顶部导航栏
+   ========================================================= */
+
+.top-nav {
+    /*
+        absolute：
+        脱离正常文档流，
+        可以根据 panel 建立的坐标参考系进行定位。
+    */
+    position: absolute;
+
+    /*
+        top: 0：
+        先让 top-nav 的顶部来到 panel 顶边。
+
+        left: 50%：
+        先让 top-nav 的左边缘来到 panel 横向 50% 的位置。
+    */
+    top: 0;
+    left: 50%;
+
+    /*
+        此时只是 top-nav 的“左边缘”位于 panel 中间，
+        所以还不是真正居中。
+
+        translateX(-50%)：
+        再向左移动自身宽度的一半，
+        实现 CSS 中很常见的水平居中。
+
+        translateY(-50%)：
+        top: 0 本来会让 top-nav 整个处于 panel 内侧，
+        再向上移动自身高度的一半后，
+        top-nav 的横向中轴线就正好压在 panel 顶边。
+
+        transform: translate(X, Y)
+
+        第一个 -50% 控制左右；
+        第二个 -50% 控制上下。
+    */
+    transform: translate(-50%, -50%);
+
+    /*
+        把 top-nav 变成 Flex 容器。
+
+        它直接包含的 button 就会成为 Flex Items。
+
+        Flex 默认主轴是水平方向，
+        所以这些按钮会横向排列。
+    */
+    display: flex;
+
+    /*
+        Flex 子元素之间保持 12px 距离。
+    */
+    gap: 12px;
+
+    /*
+        设置层级。
+
+        数字较大的元素会显示在较小的元素上方，
+        避免导航栏被正文等内容覆盖。
+    */
+    z-index: 10;
+
+    /*
+        防止顶部导航中的文字自动换行。
+    */
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   5. 顶部导航按钮
+   ========================================================= */
+
+.nav-button {
+    /*
+        “奖励时间！”比“课程”等文字更长，
+        因此使用 min-width 而不是固定 width。
+
+        按钮最少 100px，
+        如果文字真的需要更多空间，也允许按钮变宽。
+    */
+    min-width: 100px;
+
+    /*
+        所有顶部按钮高度统一。
+    */
+    height: 52px;
+
+    /*
+        按钮内部文字左右留出空间。
+    */
+    padding-left: 18px;
+    padding-right: 18px;
+
+    /*
+        按钮圆角。
+    */
+    border-radius: 16px;
+
+    /*
+        border 完整简写形式：
+
+        border: 边框粗细 线条类型 边框颜色;
+
+        这里：
+        1px   = 边框粗细
+        solid = 实线
+        rgba  = 半透明蓝色
+    */
+    border: 1px solid rgba(103, 180, 255, 0.9);
+
+    /*
+        按钮自己的半透明浅色背景。
+    */
+    background-color: rgba(245, 251, 255, 0.72);
+
+    /*
+        阴影。
+
+        这里只是增加一点悬浮感。
+    */
+    box-shadow:
+        0 4px 16px rgba(76, 146, 220, 0.15);
+
+    /*
+        transition 用于让样式变化不是瞬间完成，
+        而是在一小段时间内平滑变化。
+
+        后面 :hover 改变 transform、背景、阴影和边框时，
+        就会产生平滑动画。
+    */
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+/*
+    :hover 表示：
+    鼠标目前正停留在这个按钮上。
+*/
+.nav-button:hover {
+    background-color: rgba(225, 243, 255, 0.9);
+
+    border-color: rgba(80, 155, 255, 1);
+
+    box-shadow:
+        0 6px 20px rgba(76, 146, 220, 0.25);
+
+    /*
+        向上移动 2px，
+        产生鼠标放上去以后轻微浮起的感觉。
+    */
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   6. 顶部按钮中的文字
+   ========================================================= */
+
+/*
+    HTML 类似：
+
+    <button class="btn nav-button">
+        <span class="nav-text">课程</span>
+    </button>
+
+    button 负责：
+    大小、圆角、边框、背景、阴影。
+
+    span.nav-text 只负责：
+    文字本身的视觉样式。
+
+    这样按钮背景和渐变文字不会互相干扰。
+*/
+.nav-text {
+    /*
+        linear-gradient = 线性渐变。
+
+        90deg：
+        表示渐变大致从左向右。
+
+        三种颜色依次变化：
+        蓝色 -> 蓝紫色 -> 紫色。
+    */
+    background: linear-gradient(
+        90deg,
+        #31a8ff,
+        #668cff,
+        #a06cff
+    );
+
+    /*
+        让 background 只显示在文字形状内部。
+    */
+    background-clip: text;
+
+    /*
+        一些浏览器为了兼容需要这个前缀版本。
+    */
+    -webkit-background-clip: text;
+
+    /*
+        原本的文字颜色设成透明，
+        于是后面的渐变背景就能透过文字显示出来。
+    */
+    color: transparent;
+
+    font-size: 16px;
+}
+
+
+/*
+    一个元素可以同时拥有多个 class，例如：
+
+    class="btn nav-button selected"
+
+    .nav-button.selected 表示：
+    同时拥有 nav-button 和 selected 的元素。
+
+    后面的 .nav-text 表示：
+    再找到这个按钮内部的 nav-text。
+*/
+.nav-button.selected .nav-text {
+    /*
+        当前被选中的顶部栏目字体加粗。
+    */
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   7. 左侧导航栏
+   ========================================================= */
+
+.side-nav {
+    /*
+        和 top-nav 一样，
+        脱离正常文档流。
+
+        它会以 position: relative 的 panel
+        作为定位参考。
+    */
+    position: absolute;
+
+    /*
+        距离 panel 顶部 92px。
+
+        这个数主要用于避免侧边栏
+        和顶部导航集中在 panel 左上角。
+    */
+    top: 92px;
+
+    /*
+        left: 0：
+        先让 side-nav 的左边缘位于 panel 左边缘。
+    */
+    left: 0;
+
+    /*
+        再向左移动 side-nav 自身宽度的一半。
+
+        因此：
+
+        side-nav 的纵向中轴线
+        =
+        panel 的左边缘。
+
+        注意这里应该是 -50%，
+        而不是之前实验时写的 -10%。
+    */
+    transform: translateX(-50%);
+
+    z-index: 9;
+
+    /*
+        之后侧边栏切换时，
+        transform 和 opacity 的变化会产生动画。
+    */
+    transition:
+        transform 0.32s ease,
+        opacity 0.32s ease;
+
+    opacity: 1;
+}
+
+
+/*
+    切换一级导航时：
+    给旧侧栏临时加入 is-leaving。
+
+    calc(-100vw - 50%)：
+
+    -50%：
+    本身正常应该向左移动一半。
+
+    再减去 100vw：
+    让它继续向左移动大约一个完整窗口宽度，
+
+    最终完全离开浏览器视野。
+*/
+.side-nav.is-leaving {
+    transform: translateX(calc(-100vw - 50%));
+
+    opacity: 0;
+}
+
+
+/*
+    新侧栏出现前，
+    先瞬间把它放到屏幕左侧之外。
+
+    transition: none：
+    这个“瞬间移动到左边”的步骤不播放动画。
+*/
+.side-nav.is-entering {
+    transition: none;
+
+    transform: translateX(calc(-100vw - 50%));
+
+    opacity: 0;
+}
+
+
+/*
+    关于我、奖励时间等没有侧栏时，
+    直接不显示 side-nav。
+*/
+.side-nav.sidebar-hidden {
+    display: none;
+}
+
+
+/* =========================================================
+   8. side-nav 中的 ul / li
+   ========================================================= */
+
+.side-nav ul {
+    /*
+        ul 默认会显示：
+        •
+        •
+        •
+
+        list-style: none 可以取消这些圆点。
+    */
+    list-style: none;
+
+    /*
+        清除浏览器给 ul 默认添加的外边距。
+    */
+    margin: 0;
+
+    /*
+        清除浏览器给 ul 默认添加的内边距。
+    */
+    padding: 0;
+}
+
+
+.side-nav li {
+    /*
+        每一个侧栏项目的底部留 10px 外边距，
+        让按钮之间产生纵向距离。
+    */
+    margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   9. 侧边栏按钮
+   ========================================================= */
+
+.side-button {
+    /*
+        侧边栏所有按钮使用统一宽度。
+
+        因为 side-nav 的中轴需要压在 panel 左边缘，
+        如果每个按钮宽度不同，
+        左右伸出的长度也会不同，看起来会比较乱。
+    */
+    width: 120px;
+
+    min-height: 44px;
+
+    border-radius: 14px;
+
+    border: 1px solid rgba(103, 180, 255, 0.82);
+
+    background-color: rgba(245, 251, 255, 0.75);
+
+    box-shadow:
+        0 3px 12px rgba(76, 146, 220, 0.12);
+
+    transition:
+        transform 0.18s ease,
+        background-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+.side-button:hover {
+    background-color: rgba(222, 242, 255, 0.95);
+
+    /*
+        鼠标移入以后稍微向右移动。
+    */
+    transform: translateX(3px);
+
+    box-shadow:
+        0 5px 16px rgba(76, 146, 220, 0.22);
+}
+
+
+/*
+    侧栏文字使用和顶部导航类似的渐变方法。
+*/
+.side-text {
+    background: linear-gradient(
+        90deg,
+        #39a9ff,
+        #6f88ff,
+        #9d74ff
+    );
+
+    background-clip: text;
+
+    -webkit-background-clip: text;
+
+    color: transparent;
+}
+
+
+/*
+    当前选中的侧栏项目字体加粗。
+*/
+.side-button.selected .side-text {
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   10. 主体内容 main
+   ========================================================= */
+
+.main-content {
+    /*
+        因为 top-nav 和 side-nav 使用 absolute，
+        已经脱离正常文档流。
+
+        main 不会自动知道它们占用了空间。
+
+        所以要通过 padding
+        主动给顶部导航和左侧导航留出位置。
+
+        padding 四个参数顺序：
+
+        上 右 下 左
+    */
+    padding:
+        92px
+        80px
+        60px
+        180px;
+
+    /*
+        正文行高。
+        1.9 表示大约是字体大小的 1.9 倍。
+    */
+    line-height: 1.9;
+
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   11. 主体标题
+   ========================================================= */
+
+.main-title {
+    margin-bottom: 30px;
+
+    font-weight: 800;
+
+    /*
+        主标题同样使用蓝紫渐变。
+    */
+    background: linear-gradient(
+        90deg,
+        #129cff,
+        #6689ff,
+        #a15dff
+    );
+
+    background-clip: text;
+
+    -webkit-background-clip: text;
+
+    color: transparent;
+}
+
+
+.content-title {
+    margin-top: 28px;
+    margin-bottom: 16px;
+
+    color: #3479bd;
+
+    font-weight: 700;
+}
+
+
+/*
+    限制普通正文的最大宽度。
+
+    屏幕很宽的时候，
+    一行文字不会无限延伸到很远，
+    阅读起来更舒服。
+*/
+.main-content p {
+    max-width: 900px;
+}
+
+
+/* =========================================================
+   12. 主体正文里的可点击内容
+   ========================================================= */
+
+.content-link {
+    /*
+        把 button 默认的视觉样式去掉，
+
+        让它看起来更像正文中的普通链接，
+        但本质仍然是 button，
+        所以 JavaScript 可以监听点击事件。
+    */
+    padding: 0;
+
+    border: 0;
+
+    background: none;
+
+    color: #347fd2;
+
+    /*
+        继承正文原来的字体。
+    */
+    font: inherit;
+
+    font-weight: 700;
+
+    text-decoration: underline;
+
+    /*
+        鼠标放上去显示手型。
+    */
+    cursor: pointer;
+}
+
+
+.content-link:hover {
+    color: #795fd8;
+}
+
+
+/*
+    主体内容中的课程/实验/项目列表。
+*/
+.content-list {
+    margin-top: 25px;
+
+    padding-left: 24px;
+}
+
+
+.content-list li {
+    margin-bottom: 14px;
+}
+
+
+/* =========================================================
+   13. footer
+   ========================================================= */
+
+.footer-content {
+    /*
+        顺序同样是：
+        上 右 下 左。
+
+        左边和 main-content 保持大致一致，
+        避开侧边导航区域。
+    */
+    padding:
+        10px
+        80px
+        40px
+        180px;
+
+    font-size: 14px;
+
+    color: rgba(41, 73, 109, 0.75);
+}
+
+
+/* =========================================================
+   14. 窗口较窄时的响应式处理
+   ========================================================= */
+
+/*
+    @media 表示：
+    只有满足某个条件时，
+    里面的 CSS 才会生效。
+
+    max-width: 900px：
+
+    当浏览器宽度 <= 900px 时，
+    使用下面这套尺寸。
+*/
+@media (max-width: 900px) {
+
+    .page {
+        /*
+            小屏幕减少四周空白。
+
+            左边仍然稍微多留一点，
+            给侧栏腾空间。
+        */
+        padding:
+            70px
+            24px
+            40px
+            70px;
+    }
+
+
+    .panel {
+        min-height: calc(100vh - 110px);
+    }
+
+
+    .nav-button {
+        /*
+            小屏幕顶部按钮缩小一点。
+        */
+        min-width: 80px;
+
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+
+    .top-nav {
+        /*
+            顶部按钮间距也缩小。
+        */
+        gap: 6px;
+    }
+
+
+    .main-content {
+        /*
+            正文在小屏幕下也减少内边距。
+        */
+        padding:
+            95px
+            30px
+            50px
+            100px;
+    }
+
+
+    .footer-content {
+        padding:
+            10px
+            30px
+            35px
+            100px;
+    }
+
+
+    .side-button {
+        width: 100px;
+    }
+
+    .github-link {
+        margin-left: 12px;
+
+        color: #6f63d9;
+
+        font-weight: 700;
+
+        text-decoration: none;
+    }
+
+
+    .github-link:hover {
+        color: #9a68e8;
+
+        text-decoration: underline;
+    }
+}

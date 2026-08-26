@@ -142,6 +142,9 @@ check50 cs50/problems/2023/x/filter/less
 1. Class7里面有一些sql代码语法说明
 2. songs: 3.sql里面有关于升序降序排序的单词说明
 
+## Question8:
+1. homepage: 未来重搓一遍。chatgpt按我的要求生成出来的好漂亮，这正是我想要的（；；）
+
 # 附录：git相关
 
 ## .gitignore
