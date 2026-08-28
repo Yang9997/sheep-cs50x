@@ -1,15 +1,26 @@
 {% extends "layout.html" %}
-
 {% block body %}
-    <h1>Register</h1>
+    <h1>Please select your favorite sport</h1>
     <form action="/register" method="post">
-        <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
-        <select name="sport">
-            <option disabled selected>Sport</option>
-            {% for sport in sports %}
-                <option value="{{ sport }}">{{ sport }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Register</button>
+        <input
+         type="text"
+         autocomplete="off"
+         name="name"
+         placeholder="Please enter your name"
+         autofocus>
+
+        {% for sport in sports%}
+        <!-- type是radio这个值的时候，后面一定要有value属性作为表单数据传递 -->
+        <!-- name的值与python代码里的render_template直接对应 -->
+        <!-- value的值不给用户看，是表单传输的数据 -->
+        <input
+         type="radio"
+         name="sport"
+         value="{{ sport }}">
+         <!-- 下面这行的sport是显示在页面上给用户看的 -->
+         {{ sport }}
+        {% endfor%}
+
+          <button type="submit">register</button>
     </form>
 {% endblock %}

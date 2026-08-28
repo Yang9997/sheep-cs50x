@@ -1,21 +1,22 @@
 {% extends "layout.html" %}
 {% block body %}
-    <h1>registers</h1>
     <table>
         <thead>
-            <tr>
-                <th>name</th>
-                <th>sport</th>
-            </tr>
+            <th>name</th>
+            <th>sport</th>
         </thead>
+
         <tbody>
-            <!-- 遍历每个注册者 -->
             {% for name in registrants %}
-                <tr>
-                    <td>{{ name }}</td>
-                    <td>{{ registrants[name] }}</td>
-                </tr>
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ registrants[name] }}</td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <form action="/">
+        <button>back to index page</button>
+    </form>
 {% endblock %}
