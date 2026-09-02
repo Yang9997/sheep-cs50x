@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block body %}
+    <table>
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>sport</th>
+                <th>operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registrant in registrants %}
+
+                <tr>
+                    <td>{{ registrant.name }}</td>
+                    <td>{{ registrant.sport }}</td>
+                    <td>
+                        <!-- from不能跨td，更不能跨tr -->
+                        <form action="/deregist" method="post">
+                            <input type="hidden" name="name" value="{{ registrant.name }}">
+                            <input type="hidden" name="sport" value="{{ registrant.sport }}">
+                            <button type="submit">deregist</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

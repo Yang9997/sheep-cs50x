@@ -1,0 +1,4 @@
+# Web 框架本身
+Flask
+# 用于管理服务器端会话（session），支持将用户登录状态存储在服务器上，而不是依赖客户端 Cookie（更安全）
+Flask-Session

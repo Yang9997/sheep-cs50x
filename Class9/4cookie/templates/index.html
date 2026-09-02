@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body %}
+    <!-- 有值 -->
+    {% if session["name"] %}
+        You have registed as {{ session["name"] }}. <a href="/logout">logout</a>
+    {% else %}
+        You have not registed. <a href="/login">login</a>
+    {% endif %}
+{% endblock %}
