@@ -41,8 +41,45 @@ def index():
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
-    """Buy shares of stock"""
-    return apology("TODO")
+    if request.method == "POST":
+        symbol = request.form.get("symbol")
+        # 多少股
+        shares = request.form.get("shares")
+        if not symbol:
+            return apology("no symbol", 400)
+        symDct = lookup(symbol)
+        if not symDct:
+            return apology("invalid symbol", 400)
+        if not shares:
+            return apology("no shares", 400)
+        if not shares.isdigit():
+            return apology("shares is not a number", 400)
+        # 总价格 = 一股多少钱 * 多少股
+        price = symDct["price"]
+        shares = int(shares)
+        money = price * shares
+        # price小数real
+        db.execute("""create table if not exists share(
+            id integer primary key autoincrement not null,
+            user_id integer not null,
+            symbol text not null,
+            price real not null,
+            shares integer not null,
+            created_at datetime not null default current_timestamp,
+            foreign key (user_id) references users(id))""")
+        cash = db.execute("select cash from users where username = ?", session["name"])[0]["cash"]
+        id = db.execute("select id from users where username = ?", session["name"])[0]["id"]
+        # 买不起
+        if cash < money:
+            return apology("not enough.", 409)
+        cash = cash - money
+        # "%"是使用like时的通配符，其他语法不能用
+        db.execute("insert into share (user_id, symbol, price, shares) values (?, ?, ?, ?)", id, symbol, price, shares)
+        db.execute("update users set cash = ? where username = ?", cash, session["name"])
+        return redirect("/")
+    if not session["name"]:
+        return redirect("/register")
+    return render_template("buy.html")
 
 
 @app.route("/history")
@@ -102,14 +139,41 @@ def logout():
 @app.route("/quote", methods=["GET", "POST"])
 @login_required
 def quote():
-    """Get stock quote."""
-    return apology("TODO")
-
+    if request.method == "POST":
+        symbol = request.form.get("symbol")
+        if not symbol:
+            return apology("no symbol", 400)
+        symDct = lookup(symbol)
+        if not symDct:
+            return apology("invalid symbol", 400)
+        name = symDct["name"]
+        price = symDct["price"]
+        return render_template("quoted.html", name=name, price=price)
+    if not session["name"]:
+        return redirect("/register")
+    return render_template("quote.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
-    return apology("TODO")
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+        # 数组吗？
+        names = db.execute("select username from users")
+        if username in names:
+            # 409 conflict 和服务器现有数据冲突
+            return apology("Username has existed.", 409)
+        if not username or not password or not confirmation or password != confirmation:
+            # 400 bad request 两次密码不一致；空字段
+            return apology("Password error.", 400)
+
+        session["name"] = username
+        db.execute("insert into users (username, hash) values (?, ?)", username, generate_password_hash(password))
+        return redirect("/login")
+
+    return render_template("/register.html")
 
 
 @app.route("/sell", methods=["GET", "POST"])

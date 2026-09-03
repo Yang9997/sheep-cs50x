@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input
+     type="search"
+     autofocus
+     autocomplete="off"
+     placeholder="Query"
+     >
+
+     <ul></ul>
+
+     <script>
+        // JavaScript，帮我在 HTML 里面找到 <input>。此处运行后input = 上面html里面那一串<input ...>
+        let input = document.querySelector('input');
+        // 给input安装一个监听器，只要输入框里的内容发生变化，就执行后面的函数。
+        input.addEventListener('input', async function() {
+            // JavaScript，向服务器发送一个 HTTP 请求，请求 /search?q=inpit.value
+            let response = await fetch('/search?q=' + input.value);
+            // 把服务器回复的内容读取成文本
+            let context = await response.text();
+            // 把 <ul> 里面的 HTML 替换成服务器刚刚返回的东西。
+            document.querySelector('ul').innerHTML = context;
+        });
+
+     </script>
+</body>
+</html>
