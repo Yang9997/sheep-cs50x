@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+    <table>
+        <thead>
+            <tr>
+                <th>shareName</th>
+                <th>shareNumber</th>
+                <th>sharePrice</th>
+                <th>shareSum</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 不要让同一个 <form> 的开始和结束标签跨越不同的 <tr>，破坏 table 的合法层级结构 -->
+            {% for row in rows %}
+                <tr>
+                    <td>{{ row.symbol }}</td>
+                    <td>{{ row.sharesSum }}</td>
+                    <td>{{ row.price }}</td>
+                    <td>{{ row.money }}</td>
+                </tr>
+            {% endfor%}
+        </tbody>
+    </table>
+    <p></p>
+    <p></p>
+    <p></p>
+    <table>
+        <thead>
+            <tr>
+                <th>Cash</th>
+                <th>Money</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ cash }}</td>
+                <td>{{ money }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

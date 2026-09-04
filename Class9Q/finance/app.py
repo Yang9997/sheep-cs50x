@@ -34,8 +34,24 @@ def after_request(response):
 @app.route("/")
 @login_required
 def index():
-    """Show portfolio of stocks"""
-    return apology("TODO")
+    rows = db.execute("select symbol, sum(shares) as sharesSum from share where user_id = ? group by symbol", session["user_id"])
+    cash = db.execute("select cash from users where id = ?", session["user_id"])[0]["cash"]
+    # 总资产
+    money = cash
+    # row 引用了 rows 列表中当前那个字典对象，所以修改这个字典对象会反映在 rows 中
+    # 因为 rows 本身是列表，row 指向的是其中一个元素
+    for row in rows:
+        symbol = row["symbol"]
+        quote = lookup(symbol)
+        if not quote:
+            return apology("invalid symbol", 400)
+        price= float(quote["price"])
+        nowmoney = price * row["sharesSum"]
+        money += nowmoney
+        # 塞
+        row["price"] = price
+        row["money"] = nowmoney
+    return render_template("index.html", rows=rows, cash=cash, money=money)
 
 
 @app.route("/buy", methods=["GET", "POST"])
@@ -67,17 +83,17 @@ def buy():
             shares integer not null,
             created_at datetime not null default current_timestamp,
             foreign key (user_id) references users(id))""")
-        cash = db.execute("select cash from users where username = ?", session["name"])[0]["cash"]
-        id = db.execute("select id from users where username = ?", session["name"])[0]["id"]
+        cash = db.execute("select cash from users where user_id = ?", session["user_id"])[0]["cash"]
+        id = db.execute("select id from users where user_id = ?", session["user_id"])[0]["id"]
         # 买不起
         if cash < money:
             return apology("not enough.", 409)
         cash = cash - money
         # "%"是使用like时的通配符，其他语法不能用
         db.execute("insert into share (user_id, symbol, price, shares) values (?, ?, ?, ?)", id, symbol, price, shares)
-        db.execute("update users set cash = ? where username = ?", cash, session["name"])
+        db.execute("update users set cash = ? where id = ?", cash, session["user_id"])
         return redirect("/")
-    if not session["name"]:
+    if not session["user_id"]:
         return redirect("/register")
     return render_template("buy.html")
 
@@ -149,7 +165,7 @@ def quote():
         name = symDct["name"]
         price = symDct["price"]
         return render_template("quoted.html", name=name, price=price)
-    if not session["name"]:
+    if not session["user_id"]:
         return redirect("/register")
     return render_template("quote.html")
 
@@ -169,8 +185,10 @@ def register():
             # 400 bad request 两次密码不一致；空字段
             return apology("Password error.", 400)
 
-        session["name"] = username
+        session["user_id"] = user_id
         db.execute("insert into users (username, hash) values (?, ?)", username, generate_password_hash(password))
+        user_id = db.execute("select id from users where username = ?", username)[0]["user_id"]
+        session["user_id"] = user_id
         return redirect("/login")
 
     return render_template("/register.html")
@@ -179,5 +197,32 @@ def register():
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
 def sell():
-    """Sell shares of stock"""
-    return apology("TODO")
+    if request.method == "POST":
+        symbol = request.form.get("symbol")
+        shares = request.form.get("shares")
+        if not symbol:
+            return apology("symbol error", 400)
+        if not shares:
+            return apology("shares error", 400)
+        try:
+            shares = int(shares)
+        except ValueError:
+            return apology("shares is not a integer", 400)
+        if shares < 0:
+            return apology("invalid shares", 400)
+        nowshares = db.execute("select sum(shares) as sharesSum from share where symbol = ? and user_id = ?", symbol, session["user_id"])[0]["sharesSum"]
+        if nowshares < shares:
+            return apology("shares is not enough", 409)
+        price = lookup(symbol)["price"]
+        db.execute("insert into share (user_id, symbol, price, shares) values (?, ?, ?, ?)", session["user_id"], symbol, price, -shares)
+        cash = db.execute("select cash from users where id = ?", session["user_id"])[0]["cash"]
+        cash += price * shares
+        db.execute("update users set cash = ? where id = ?", cash, session["user_id"])
+        return redirect("/")
+
+    # sum(shares) 是聚合函数，不能这样放在 where 里。
+    # symbols = db.execute("select symbol from share where user_id = ? and sum(shares) > 0 group by symbol", session["user_id"])
+    # where：分组前过滤普通行
+    # having：分组之后过滤聚合结果
+    symbols = db.execute("select symbol from share where user_id = ? and sum(shares) > 0 group by symbol", session["user_id"])
+    return render_template("sell.html", symbols=symbols)
