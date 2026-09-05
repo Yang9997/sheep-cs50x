@@ -20,8 +20,8 @@
                 <tr>
                     <td>{{ row.symbol }}</td>
                     <td>{{ row.sharesSum }}</td>
-                    <td>{{ row.price }}</td>
-                    <td>{{ row.money }}</td>
+                    <td>{{ row.price | usd }}</td>
+                    <td>{{ row.money | usd }}</td>
                 </tr>
             {% endfor%}
         </tbody>
@@ -38,8 +38,8 @@
         </thead>
         <tbody>
             <tr>
-                <td>{{ cash }}</td>
-                <td>{{ money }}</td>
+                <td>{{ cash | usd }}</td>
+                <td>{{ money | usd }}</td>
             </tr>
         </tbody>
     </table>

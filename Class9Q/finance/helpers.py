@@ -73,6 +73,7 @@ def lookup(symbol):
         return None
 
 
+# 哦这还有个限制小数位数的函数，用在html里面的flask语法是 | usd
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"

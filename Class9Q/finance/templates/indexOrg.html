@@ -1,22 +1,20 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Quoted
+    IndexOrg
 {% endblock %}
 
 {% block main %}
+    {{ message }}
     <table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Price</th>
+                <th>Cash</th>
             </tr>
         </thead>
-
         <tbody>
             <tr>
-                <td>{{ name }}</td>
-                <td>{{ price | usd }}</td>
+                <td>{{ cash | usd }}</td>
             </tr>
         </tbody>
     </table>

@@ -34,7 +34,11 @@ def after_request(response):
 @app.route("/")
 @login_required
 def index():
-    rows = db.execute("select symbol, sum(shares) as sharesSum from share where user_id = ? group by symbol", session["user_id"])
+    ifhasShare = db.execute("select * from share where user_id = ?", session["user_id"])
+    if not ifhasShare:
+        cash = 10000.00
+        return render_template("indexOrg.html", message="no share", cash=cash)
+    rows = db.execute("select symbol, sum(shares) as sharesSum from share where user_id = ? group by symbol having sum(shares) > 0", session["user_id"])
     cash = db.execute("select cash from users where id = ?", session["user_id"])[0]["cash"]
     # 总资产
     money = cash
@@ -68,29 +72,20 @@ def buy():
             return apology("invalid symbol", 400)
         if not shares:
             return apology("no shares", 400)
-        if not shares.isdigit():
-            return apology("shares is not a number", 400)
+        if not shares.isdigit() or int(shares) == 0:
+            return apology("invalid shares", 400)
         # 总价格 = 一股多少钱 * 多少股
         price = symDct["price"]
         shares = int(shares)
         money = price * shares
         # price小数real
-        db.execute("""create table if not exists share(
-            id integer primary key autoincrement not null,
-            user_id integer not null,
-            symbol text not null,
-            price real not null,
-            shares integer not null,
-            created_at datetime not null default current_timestamp,
-            foreign key (user_id) references users(id))""")
-        cash = db.execute("select cash from users where user_id = ?", session["user_id"])[0]["cash"]
-        id = db.execute("select id from users where user_id = ?", session["user_id"])[0]["id"]
+        cash = db.execute("select cash from users where id = ?", session["user_id"])[0]["cash"]
         # 买不起
         if cash < money:
             return apology("not enough.", 409)
         cash = cash - money
         # "%"是使用like时的通配符，其他语法不能用
-        db.execute("insert into share (user_id, symbol, price, shares) values (?, ?, ?, ?)", id, symbol, price, shares)
+        db.execute("insert into share (user_id, symbol, price, shares) values (?, ?, ?, ?)", session["user_id"], symbol, price, shares)
         db.execute("update users set cash = ? where id = ?", cash, session["user_id"])
         return redirect("/")
     if not session["user_id"]:
@@ -101,12 +96,29 @@ def buy():
 @app.route("/history")
 @login_required
 def history():
-    """Show history of transactions"""
-    return apology("TODO")
+    # sqlite允许order指定多个字段
+    rows = db.execute("select symbol, price, shares, created_at from share where user_id = ? order by symbol asc, created_at desc", session["user_id"])
+    for row in rows:
+        if row["shares"] > 0:
+            row["attitude"] = "buy"
+        else:
+            row["shares"] = -row["shares"]
+            row["attitude"] = "sell"
+
+    return render_template("history.html", rows=rows)
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    db.execute("""create table if not exists share(
+                id integer primary key autoincrement not null,
+                user_id integer not null,
+                symbol text not null,
+                price real not null,
+                shares integer not null,
+                created_at datetime not null default current_timestamp,
+                foreign key (user_id) references users(id))""")
+
     """Log user in"""
 
     # Forget any user_id
@@ -176,20 +188,20 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
-        # 数组吗？
-        names = db.execute("select username from users")
-        if username in names:
+        name = db.execute("select username from users where username = ?", username)
+        if name:
+            # name已存在
             # 409 conflict 和服务器现有数据冲突
-            return apology("Username has existed.", 409)
+            return apology("Username has existed.", 400)
         if not username or not password or not confirmation or password != confirmation:
             # 400 bad request 两次密码不一致；空字段
             return apology("Password error.", 400)
 
-        session["user_id"] = user_id
         db.execute("insert into users (username, hash) values (?, ?)", username, generate_password_hash(password))
-        user_id = db.execute("select id from users where username = ?", username)[0]["user_id"]
+        user_id = db.execute("select id from users where username = ?", username)[0]["id"]
         session["user_id"] = user_id
-        return redirect("/login")
+        # 注册成功之后直接进到主页
+        return redirect("/")
 
     return render_template("/register.html")
 
@@ -208,11 +220,14 @@ def sell():
             shares = int(shares)
         except ValueError:
             return apology("shares is not a integer", 400)
-        if shares < 0:
+        if shares <= 0:
             return apology("invalid shares", 400)
+        ifhasSym = db.execute("select * from share where symbol = ? and user_id = ?", symbol, session["user_id"])
+        if not ifhasSym:
+            return apology("have not buy this symbol", 400)
         nowshares = db.execute("select sum(shares) as sharesSum from share where symbol = ? and user_id = ?", symbol, session["user_id"])[0]["sharesSum"]
         if nowshares < shares:
-            return apology("shares is not enough", 409)
+            return apology("shares is not enough", 400)
         price = lookup(symbol)["price"]
         db.execute("insert into share (user_id, symbol, price, shares) values (?, ?, ?, ?)", session["user_id"], symbol, price, -shares)
         cash = db.execute("select cash from users where id = ?", session["user_id"])[0]["cash"]
@@ -224,5 +239,5 @@ def sell():
     # symbols = db.execute("select symbol from share where user_id = ? and sum(shares) > 0 group by symbol", session["user_id"])
     # where：分组前过滤普通行
     # having：分组之后过滤聚合结果
-    symbols = db.execute("select symbol from share where user_id = ? and sum(shares) > 0 group by symbol", session["user_id"])
+    symbols = db.execute("select symbol from share where user_id = ? group by symbol having sum(shares) > 0", session["user_id"])
     return render_template("sell.html", symbols=symbols)
