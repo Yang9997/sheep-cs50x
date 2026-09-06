@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+        <link href="/static/styles.css" rel="stylesheet">
+        <title>Birthdays</title>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Birthdays</h1>
+        </div>
+        <div class="container">
+            <div class="section">
+
+                <h2>Add a Birthday</h2>
+                <form action="/" method="post">
+                    <input
+                     type="text"
+                     autofocus
+                     autocomplete="off"
+                     placeholder="Name"
+                     name="name">
+                    <input
+                     type="number"
+                     autocomplete="off"
+                     placeholder="Month"
+                     name="month"
+                     min=1
+                     max=12>
+                    <input
+                     type="number"
+                     autocomplete="off"
+                     placeholder="Day"
+                     name="day"
+                     min=1
+                     max=31>
+                    <button type="submit" name="action" value="add">ok</button>
+                </form>
+            </div>
+
+            <div class="container">
+                <div class="section">
+
+                    <h2>Delete a Birthday</h2>
+                    <form action="/" method="post">
+                        <input
+                         type="number"
+                         autocomplete="off"
+                         placeholder="ID"
+                         name="id"
+                         min = 1>
+                        <button type="submit" name="action" value="delete">ok</button>
+                    </form>
+                </div>
+
+            <div class="section">
+
+                <h2>All Birthdays</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Birthday</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for birthday in birthdays %}
+                            <tr>
+                                <td>{{ birthday.name }}</td>
+                                <td>{{ birthday.month }} M {{ birthday.day }} D </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
