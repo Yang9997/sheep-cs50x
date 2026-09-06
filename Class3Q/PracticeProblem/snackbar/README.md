@@ -57,7 +57,7 @@ Soda: $2.00
 Enter a food item: burger
 Enter a food item: fries
 Enter a food item: soda
-Enter a food item: 
+Enter a food item:
 
 Your total cost is: $16.50
 ```
@@ -81,7 +81,7 @@ Soda: $2.00
 
 Enter a food item: cold brew
 Enter a food item: hot dog
-Enter a food item: 
+Enter a food item:
 
 Your total cost is: $8.00
 ```
@@ -89,7 +89,7 @@ Your total cost is: $8.00
 
 No `check50` for this one!
 
-To evaluate that the style of your code, type in the following at the `$` prompt. 
+To evaluate that the style of your code, type in the following at the `$` prompt.
 
 ```
 style50 snackbar.c

@@ -111,7 +111,7 @@ def history():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     db.execute("""create table if not exists share(
-                id integer primary key autoincrement not null,
+                id integer primary key autoincrement,
                 user_id integer not null,
                 symbol text not null,
                 price real not null,

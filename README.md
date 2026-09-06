@@ -128,22 +128,24 @@ check50 cs50/problems/2023/x/filter/less
 # 3. 笔记索引
 
 ## Class3Q：
-1. 关于c语言的string和strlen：Class3Q/PracticeProblem/atoi/readme.md
-2. runoff 候选人投票题目代码数组赋值逻辑错误：Class3Q/ProblemSet/runoff/readme.md
-3. tideman 候选人投票题目递归代码逻辑：Class3Q/ProblemSet/tideman/readme.md
+1. 关于c语言的string和strlen：Class3Q/PracticeProblem/atoi/README.md
+2. runoff 候选人投票题目代码数组赋值逻辑错误：Class3Q/ProblemSet/runoff/README.md
+3. tideman 候选人投票题目递归代码逻辑：Class3Q/ProblemSet/tideman/README.md
 4. 插入排序：Class3Q/ProblemSet/temps/insertsort.c
 5. 选择排序，冒泡排序，归并排序：Class3Q/Lab/sorts/
 
-## Question4:
+## Class4Q:
 1. 关于变量类型存储范围超出会溢出截断，比如BYTE类型变量范围是0-255
 2. 注意中间值临时变量的使用会不会影响未来要使用的变量，尤其是数组类型要在原数值上整体做改变的时候，注意要完全变化之后再一起用中间值过渡来修改值
 
-## Question7:
+## Class7:
 1. Class7里面有一些sql代码语法说明
-2. songs: 3.sql里面有关于升序降序排序的单词说明
 
-## Question8:
-1. homepage: 未来重搓一遍。chatgpt按我的要求生成出来的好漂亮，这正是我想要的（；；）
+## Class7Q:
+1. songs: 3.sql里面有关于升序降序排序的单词说明
+
+## Class9Q:
+1. finance: README.md里面有一些关于python里的sql语法，session，debug的说明，代码里面也有一些改bug的时候添加的注释
 
 # 附录：git相关
 
@@ -152,9 +154,9 @@ check50 cs50/problems/2023/x/filter/less
 # git的忽略模式语法不支持 ./ 前缀
 # 在.gitignore文件里面
 # error 无效
-# ./readme.md
+# ./README.md
 # 有效
-/readme.md
+/README.md
 ```
 ```bash
 # 对于已提交跟踪过的文件没办法通过添加后生效，需要手动删掉
